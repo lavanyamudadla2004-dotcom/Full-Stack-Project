@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AU Quiz Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      background: linear-gradient(135deg,#1B1B2F,#162447) no-repeat center center/cover;
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+    }
+
+    .glass-panel {
+      width: 600px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border-left: 6px solid #FF6B6B;
+      box-shadow: -10px 0 40px rgba(255,107,107,0.4);
+      display: flex;
+      flex-direction: column;
+      padding: 40px;
+      position: relative;
+      animation: slideIn 1.2s ease-out;
+    }
+
+    @keyframes slideIn {
+      0% { transform: translateX(100%); opacity: 0; }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+
+    .glass-panel img {
+      width: 250px;
+      margin: 0 auto 30px;
+      filter: drop-shadow(0 0 5px #00fff7);
+    }
+
+    .glass-panel h2 {
+      color: #FFD93D;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 24px;
+      letter-spacing: 1px;
+    }
+
+    .glass-panel input {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid #FFD93D;
+      margin-bottom: 25px;
+      padding: 10px;
+      color: #FFD93D;
+      width: 100%;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .glass-panel input::placeholder {
+      color: #CCCCCC;
+    }
+
+    .glass-panel button {
+      padding: 12px;
+      background: #FF6B6B;
+      color: #fff;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    .glass-panel button:hover {
+      background: #6BCB77;
+      box-shadow: 0 0 10px #FFD93D;
+    }
+
+    .error-msg {
+      color: #ff4d4d;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .left-text {
+      flex: 1;
+      padding: 60px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .left-text h1 {
+      font-size: 40px;
+      line-height: 1.3;
+      color: #00fff7;
+    }
+
+    .left-text p {
+      font-size: 18px;
+      margin-top: 20px;
+      color: #c6f7f7;
+    }
+
+    @media screen and (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .left-text {
+        padding: 30px;
+        text-align: center;
+        height: 40%;
+      }
+
+      .glass-panel {
+        width: 600%;
+        height: 60%;
+        padding: 30px;
+        border-left: none;
+        border-top: 6px solid #00fff7;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="left-text">
+    <h1>Welcome to<br>Exam Generator System</h1>
+    <p>Access exams securely. Authorized students & admins only.</p>
+  </div>
+
+  <div class="glass-panel">
+    <img src="andhra.jpg" alt="AU Logo" />
+    <h2>Login to Continue</h2>
+    <input type="text" id="username" placeholder="Username" required/>
+    <input type="password" id="password" placeholder="Password" required/>
+    <div class="error-msg" id="errorMsg">Invalid Username or Password</div>
+    <button onclick="login()">Login</button>
+    <div style ="text-align:center; margin-top:20px;">
+        <p style="color:#ccc;font-size:14px;">Don't have an account?
+        <a href="register.html" style="color:#FFD93D;font-weight:bold;text-decoration:none">Register here</a></p></div>
+  </div>
+<script>
+function login() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+  const errorBox = document.getElementById("errorMsg");
+
+  fetch("http://localhost:8000/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `username=${username}&password=${password}`
+  })
+  .then(res => res.json())
+  .then(data => {
+    errorBox.innerText = data.message;
+    errorBox.style.display = "block";
+    if (data.status === "success") {
+      sessionStorage.setItem("loggedIn", "true");  // ✅ Add this line
+      sessionStorage.setItem("username", username);  // (Optional)
+      setTimeout(() => window.location.href = "dashboard.html", 1000);
+    }
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!-- success.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🎉 Exam Ready</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e1e2f, #2b2d50);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #00ffc8;
+      text-shadow: 0 0 15px #00ffc855;
+    }
+
+    p {
+      margin-top: 15px;
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+
+    .btn {
+      margin-top: 30px;
+      padding: 12px 30px;
+      background: #00ffc8;
+      color: #000;
+      border: none;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px #00ffc855;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #ff6bff;
+      color: #fff;
+      box-shadow: 0 0 20px #ff6bff88;
+    }
+  </style>
+</head>
+<body onload="launchConfetti()">
+  <script>
+    if(sessionStorage.getItem("loggedIn")!=="true"){
+    alert("User not logged in!!")
+    window.location.href="index.html"
+  }
+  </script>
+  <h1>🎉 Your Exam PDF is Ready!</h1>
+  <p>Download completed successfully. Best of luck for your exam! 💪</p>
+  <button class="btn" onclick="window.location.href='students.html'">⏪ Go Back</button>
+  <button class="btn" onclick="logout()">🚪Logout</button>
+
+  <script>
+    function launchConfetti() {
+      confetti({
+        particleCount: 150,
+        spread: 90,
+        origin: { y: 0.6 }
+      });
+    }
+  </script>
+  <script>
+    function logout(){
+        sessionStorage.clear();
+        window.location.href="index.html";
+    }
+  </script>
+</body>
+</html>

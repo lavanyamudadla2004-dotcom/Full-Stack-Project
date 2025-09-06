@@ -1,0 +1,389 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8" />
+  <title>Student Exam Portal – Futuristic</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.2/dist/vanilla-tilt.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>  
+  <style>
+    :root {
+      --bg-color: #0e0e16;
+      --text-color: #eee;
+      --glass-color: rgba(255, 255, 255, 0.05);
+    }@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+  transition: background 0.5s, color 0.5s;
+}
+
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.card-glass {
+  width: 90%;
+  max-width: 800px;
+  margin: 80px auto;
+  padding: 45px 35px;
+  border-radius: 24px;
+  background: var(--glass-color);
+  backdrop-filter: blur(20px);
+  border: 4px solid transparent;
+  position: relative;
+  z-index: 1;
+  animation: fadeSlideIn 1s ease;
+}
+
+.card-glass::before {
+  content: "";
+  position: absolute;
+  pointer-events:none;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px;
+  background: conic-gradient(from 0deg, #00eaff, #9f6bff, #00eaff);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: spinBorder 5s linear infinite;
+}
+
+@keyframes spinBorder {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+h2 {
+  text-align: center;
+  color: #00eaff;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px #00eaff88;
+}
+
+.clock {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #aefeff;
+  margin-bottom: 10px;
+  user-select: none;
+}
+
+.form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.form-group select {
+  width: 100%;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 2px solid #00eaff26;
+  border-radius: 12px;
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+select option {
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+.form-group label {
+  color: #aaa;
+  margin-top: 5px;
+  font-weight: 600;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 20px;
+}
+
+.btn-neon {
+  flex: 1 1 calc(33% - 1rem);
+  min-width: 160px;
+  background: linear-gradient(135deg, #00eaff, #9f6bff);
+  color: #000;
+  border: none;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 14px 20px;
+  box-shadow: 0 0 15px #00eaff88;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.btn-neon:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 25px #00ffe7;
+}
+
+.tips,
+#exam-tips {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-top: 25px;
+  animation: floatUp 2s ease;
+}
+
+@keyframes floatUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+#countdown {
+  font-size: 2rem;
+  color: #00eaff;
+  text-align: center;
+  margin-top: 20px;
+  user-select: none;
+}
+@Keyframes fadeIn{
+    from {opacity:0;transform:translateY(10px);}
+    to{opacity:1;transform:translateY(0);}
+}
+html,body{
+    overflow-x:hidden;
+    overflow-y:hidden;
+    height:100%;
+    margin:0;
+    padding:0;
+}
+.puzzle-box {
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(255,255,255,0.08);
+  border-left: 4px solid #9f6bff;
+  border-radius: 12px;
+  box-shadow: 0 0 12px #9f6bff66;
+  animation: fadeIn 0.5s ease;
+  display: none;
+  font-weight: 600;
+  color: #9f6bff;
+  text-align: center;
+}
+.answer-box {
+  margin-top: 10px;
+  color: #00e676;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+
+  </style>
+</head>
+<script>
+  if(sessionStorage.getItem("loggedIn")!=="true"){
+    alert("User not logged in!!")
+    window.location.href="index.html"
+  }
+</script>
+<body>
+<div id="particles-js"></div>
+<div class="card-glass" data-tilt data-tilt-max="8">
+  <div class="clock" id="clock">⏰ Loading time...</div>
+  <h2 id="welcomeText">🎓 Student Exam Portal</h2>
+  <div class="form-group">
+    <label>Select Subject:</label>
+    <select id="subject" name="subject">
+      <option value="" disabled selected>Choose subject</option>
+      <option value="DBMS">DBMS</option>
+      <option value="Python">Python</option>
+      <option value="AI">AI</option>
+      <option value="ML">Machine Learning</option>
+      <option value="WebDev">Web Development</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Select Difficulty:</label>
+    <select id="difficulty" name="difficulty">
+      <option value="" disabled selected>Choose difficulty</option>
+      <option value="Easy">Easy</option>
+      <option value="Medium">Medium</option>
+      <option value="Tough">Tough</option>
+    </select>
+  </div>
+  <div class="button-group">
+    <button onclick="startExam(event)" class="btn-neon">🚀 Start Exam</button>
+    <button onclick="showPuzzle()" class="btn-neon">🧩 Logic Puzzle</button>
+    <button onclick="toggleMode()" class="btn-neon">🌓 Toggle Mode</button><br><br>
+  </div><div style="text-align:right;">
+    
+    <button class="btn" onclick="window.location.href='dashboard.html'">⏪ Go Back</button>
+  </div>
+  <div id="countdown"></div>
+  <div id="exam-tips"></div>
+  <div id="puzzleBox" class="puzzle-box"></div>
+  <div id="answerBox" class="answer-box" style="text-align:center;"></div>
+</div><script>
+  particlesJS("particles-js", {
+    particles: {
+      number: { value: 100 },
+      color: { value: "#00eaff" },
+      shape: { type: "circle" },
+      opacity: { value: 0.3 },
+      size: { value: 3 },
+      line_linked: {
+        enable: true,
+        distance: 120,
+        color: "#00eaff",
+        opacity: 0.2,
+        width: 1
+      },
+      move: { enable: true, speed: 2 }
+    },
+    interactivity: {
+      events: {
+        onhover: { enable: true, mode: "repulse" }
+      }
+    },
+    retina_detect: true
+  });
+
+  setInterval(() => {
+    document.getElementById("clock").textContent = `⏰ ${new Date().toLocaleTimeString()}`;
+  }, 1000);
+
+  let bgColors = ['#0e0e16', '#003344', '#2e003e', '#0a0f3c', '#012b2b'];
+  let currentIndex = 0;
+  function toggleMode() {
+    currentIndex = (currentIndex + 1) % bgColors.length;
+    document.body.style.backgroundColor = bgColors[currentIndex];
+  }
+
+  const tips = [
+    "💡 Stay focused, you've got this!",
+    "📖 Read every question carefully!",
+    "🚀 Trust your preparation!",
+    "⏳ Manage your time wisely."
+  ];
+  let tipIndex = 0;
+  setInterval(() => {
+    document.getElementById("exam-tips").textContent = tips[tipIndex];
+    tipIndex = (tipIndex + 1) % tips.length;
+  }, 4000);
+
+  let username = prompt("Enter your name:");
+  if (username) {
+    localStorage.setItem("studentName", username);
+    document.getElementById("welcomeText").innerHTML = `🎓 Welcome, ${username}!`;
+  }
+
+
+function startExam(e) {
+  e.preventDefault();
+  const subject = document.getElementById("subject").value;
+  const difficulty = document.getElementById("difficulty").value;
+
+  if (subject && difficulty) {
+    const countdown = document.getElementById("countdown");
+    countdown.textContent = "🛠️ Preparing your PDF...";
+    countdown.style.color = "#ffea00";
+
+    setTimeout(() => {
+      const url = `http://localhost:8000/start_exam?subject=${subject}&difficulty=${difficulty}`;
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${subject}_exam.pdf`; // 🌟 Subject-based file name
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      countdown.textContent = "✅ PDF ready!";
+      countdown.style.color = "#00eaff";
+      setTimeout(()=>{
+        window.location.href="success.html";
+      },1000);
+    }, 1000);
+  } else {
+    alert("⚠️ Please select both subject and difficulty.");
+  }
+}
+
+  function showPuzzle() {
+    const puzzles = [
+  {
+    q: "🧠 A woman was born in 1975 and died in 1975. But she died at the age of 45. How is it possible?",
+    a: "1975 is the room number in the hospital, not the year."
+  },
+  {
+    q: "🚪 A man entered a dark room with only one match. There’s a kerosene lamp, a fireplace, and a candle. What did he light first?",
+    a: "The match!"
+  },
+  {
+    q: "🔐 You’re trapped in a room with 3 doors:\n1️⃣ Fire Room 🔥\n2️⃣ Assassin Room 🗡️\n3️⃣ Tiger that hasn’t eaten in 3 years 🐅\nWhich is safest?",
+    a: "Door 3 — the tiger is dead after not eating for 3 years!"
+  },
+  {
+    q: "🧪 In a lab, there are 2 identical pills. One is poison. You must take one pill & give the other to a scientist. He survives. How?",
+    a: "Both pills were safe. Poison was in the glass of water the scientist didn’t drink."
+  },
+  {
+    q: "👨‍👧 A father and daughter are in a car crash. The father dies. Girl is rushed to hospital. The surgeon says, “I can’t operate on my daughter!” How?",
+    a: "The surgeon is her **mother**."
+  },
+  {
+    q: "⏳ You have 2 ropes. Each takes exactly 60 mins to burn but burns unevenly. How to measure exactly 45 minutes?",
+    a: "Burn one rope from both ends and other from one end. When first finishes (30 min), light the other end of second rope = 15 min."
+  },
+  {
+    q: "📦 You’re blindfolded and told there are 2 red hats and 3 blue hats in a box. You pick one without seeing. What’s the probability it’s blue?",
+    a: "3 out of 5 = **60%** chance it's blue."
+  },
+  {
+    q: "🔄 What 5-letter word becomes shorter when you add 2 letters?",
+    a: "The word is 'Short' — add ‘er’ to get ‘Shorter’"
+  },
+  {
+    q: "💬 The more you take, the more you leave behind. What is it?",
+    a: "Footsteps"
+  },
+  {
+    q: "😵 You see me once in June, twice in November, but not at all in May. What am I?",
+    a: "The letter 'e'"
+  }
+];
+    const rand = puzzles[Math.floor(Math.random() * puzzles.length)];
+    document.getElementById("puzzleBox").textContent = rand.q;
+    document.getElementById("puzzleBox").style.display = "block";
+    document.getElementById("answerBox").textContent = `🧠 Answer: ${rand.a}`;
+  }
+</script></body>
+</html>
